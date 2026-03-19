@@ -14,6 +14,19 @@ export const fetchAccounts = async (): Promise<Account[]> => {
   }))
 };
 
+export const fetchAccountById = async (
+  accountNumber: string
+): Promise<Account> => {
+  const response = await fetch(`${API}/${accountNumber}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch account");
+  }
+
+  return response.json();
+};
+
 export const createAccount = async (
   name: string,
   currency: string
@@ -25,6 +38,30 @@ export const createAccount = async (
     },
     body: JSON.stringify({ name, currency }),
   });
+};
+
+export const updateAccount = async (
+  accountNumber: string,
+  accountName: string
+): Promise<Account> => {
+  const response = await fetch(
+    `http://localhost:8080/accounts/${accountNumber}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        accountName,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to update account");
+  }
+
+  return response.json();
 };
 
 export const transact = async (

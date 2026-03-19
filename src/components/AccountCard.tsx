@@ -1,11 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import type { Account } from "../types/Account";
 
 interface Props {
   account: Account;
-  onDeposit: (account: Account) => void;
-  onWithdraw: (account: Account) => void;
-  onTransfer: (account: Account) => void;
-  onViewTransactions: (account: Account) => void; // ✅ added
+  onDeposit: () => void;
+  onWithdraw: () => void;
+  onTransfer: () => void;
+  onViewTransactions: () => void;
 }
 
 export default function AccountCard({
@@ -13,51 +14,71 @@ export default function AccountCard({
   onDeposit,
   onWithdraw,
   onTransfer,
-  onViewTransactions, // ✅ added
+  onViewTransactions,
 }: Props) {
-  return (
-    <div className="bg-slate-900 rounded-2xl p-6 shadow-lg border border-slate-800 hover:border-indigo-500 transition">
-      {/* Account Name */}
-      <h3 className="text-lg font-semibold text-white mb-2">
-        {account.accountName}
-      </h3>
+  const navigate = useNavigate();
 
-      {/* Account Number */}
-      <p className="text-sm text-slate-400 mb-4">
-        #{account.accountNumber}
-      </p>
+  const formatBalance = (balance: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: account.currency,
+    }).format(balance);
+  };
+
+  return (
+    <div
+      onClick={() =>
+        navigate(`/account/${account.accountNumber}`)
+      }
+      className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-lg cursor-pointer hover:border-indigo-500 transition"
+    >
+      {/* Header */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">
+          {account.accountName}
+        </h2>
+        <span className="text-slate-400 text-sm">
+          {account.accountNumber}
+        </span>
+      </div>
 
       {/* Balance */}
-      <p className="text-2xl font-bold mb-6">
-        {account.balance} {account.currency}
-      </p>
+      <div className="mb-6">
+        <p className="text-slate-400 text-sm">Balance</p>
+        <p className="text-2xl font-bold text-green-400">
+          {formatBalance(account.balance)}
+        </p>
+      </div>
 
       {/* Actions */}
-      <div className="grid grid-cols-2 gap-2">
+      <div
+        className="grid grid-cols-2 gap-3"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button
-          onClick={() => onDeposit(account)}
-          className="bg-emerald-600 hover:bg-emerald-500 py-2 rounded-lg text-sm font-medium transition"
+          onClick={onDeposit}
+          className="bg-green-600 hover:bg-green-500 py-2 rounded-lg transition"
         >
           Deposit
         </button>
 
         <button
-          onClick={() => onWithdraw(account)}
-          className="bg-rose-600 hover:bg-rose-500 py-2 rounded-lg text-sm font-medium transition"
+          onClick={onWithdraw}
+          className="bg-red-600 hover:bg-red-500 py-2 rounded-lg transition"
         >
           Withdraw
         </button>
 
         <button
-          onClick={() => onTransfer(account)}
-          className="bg-indigo-600 hover:bg-indigo-500 py-2 rounded-lg text-sm font-medium transition"
+          onClick={onTransfer}
+          className="bg-indigo-600 hover:bg-indigo-500 py-2 rounded-lg transition"
         >
           Transfer
         </button>
 
         <button
-          onClick={() => onViewTransactions(account)}
-          className="bg-slate-700 hover:bg-slate-600 py-2 rounded-lg text-sm font-medium transition"
+          onClick={onViewTransactions}
+          className="bg-slate-700 hover:bg-slate-600 py-2 rounded-lg transition"
         >
           History
         </button>
