@@ -6,7 +6,7 @@ import AccountCard from "./components/AccountCard";
 import CreateAccountForm from "./components/CreateAccountForm";
 import TransactionModal from "./components/TransactionModal";
 import TransferModal from "./components/TransferModal";
-
+import TransactionPanel from "./components/TransactionPanel";
 
 import {
   fetchAccounts,
@@ -15,7 +15,6 @@ import {
   transfer,
   getTransactions,
 } from "./services/accountService";
-import TransactionPanel from "./components/TransactionPanel";
 
 export default function App() {
   // ===============================
