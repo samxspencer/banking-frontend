@@ -24,28 +24,39 @@ export default function TransactionModal({
   if (!isOpen || !account || !actionType) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-slate-900 p-8 rounded-2xl w-96 border border-slate-800 shadow-2xl">
-        <h3 className="text-xl font-semibold mb-2 capitalize">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 px-6">
+
+      <div className="bg-cream border border-brown/10 p-10 rounded-xl w-full max-w-md shadow-xl">
+
+        {/* Title */}
+        <h3 className="text-2xl font-semibold text-brown mb-3 tracking-wide capitalize">
           {actionType} Funds
         </h3>
 
-        <p className="text-sm text-slate-400 mb-6">
-          {account.name} • {account.currency}
+        {/* Account Info */}
+        <p className="text-sm text-brown/60 mb-8">
+          {account.accountName} • {account.currency}
         </p>
 
-        <input
-          type="number"
-          placeholder="Enter amount"
-          value={amount}
-          onChange={(e) => onAmountChange(e.target.value)}
-          className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 mb-6 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
+        {/* Amount */}
+        <div className="mb-10">
+          <label className="block text-sm tracking-widest text-brown/60 mb-3">
+            Amount
+          </label>
+          <input
+            type="number"
+            placeholder="Enter amount"
+            value={amount}
+            onChange={(e) => onAmountChange(e.target.value)}
+            className="w-full border border-brown/20 bg-white rounded-md px-4 py-3 text-brown focus:outline-none focus:border-burgundy transition"
+          />
+        </div>
 
+        {/* Actions */}
         <div className="flex gap-4">
           <button
             onClick={onClose}
-            className="flex-1 bg-slate-700 hover:bg-slate-600 py-2 rounded-lg transition"
+            className="flex-1 border border-brown/20 py-3 rounded-md text-brown hover:bg-brown/5 transition"
           >
             Cancel
           </button>
@@ -53,11 +64,12 @@ export default function TransactionModal({
           <button
             onClick={onConfirm}
             disabled={loading}
-            className="flex-1 bg-indigo-600 hover:bg-indigo-500 py-2 rounded-lg transition disabled:opacity-50"
+            className="flex-1 bg-burgundy text-cream py-3 rounded-md tracking-widest text-sm hover:opacity-90 transition disabled:opacity-50"
           >
             {loading ? "Processing..." : "Confirm"}
           </button>
         </div>
+
       </div>
     </div>
   );

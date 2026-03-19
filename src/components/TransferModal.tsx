@@ -24,7 +24,6 @@ export default function TransferModal({
 }: Props) {
   const [selectedToAccount, setSelectedToAccount] = useState<string | null>(null);
 
-  // Reset when modal closes
   useEffect(() => {
     if (!isOpen) {
       setSelectedToAccount(null);
@@ -43,41 +42,42 @@ export default function TransferModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-slate-900 rounded-2xl p-6 w-full max-w-md border border-slate-800 shadow-2xl">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50 px-6">
+
+      <div className="bg-cream border border-brown/10 rounded-xl p-10 w-full max-w-lg shadow-xl">
+
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-white">
+        <div className="flex justify-between items-center mb-10">
+          <h2 className="text-2xl font-semibold text-brown tracking-wide">
             Transfer Funds
           </h2>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white text-lg"
+            className="text-brown/50 hover:text-brown transition text-lg"
           >
             ✕
           </button>
         </div>
 
         {/* From Account */}
-        <div className="mb-4">
-          <p className="text-sm text-slate-400">From</p>
-          <p className="font-medium">
-            {fromAccount.accountName} (#
-            {fromAccount.accountNumber})
+        <div className="mb-8">
+          <p className="text-sm tracking-widest text-brown/60 mb-2">
+            From
+          </p>
+          <p className="text-brown font-medium">
+            {fromAccount.accountName} (#{fromAccount.accountNumber})
           </p>
         </div>
 
         {/* To Account */}
-        <div className="mb-4">
-          <label className="block text-sm text-slate-400 mb-1">
+        <div className="mb-8">
+          <label className="block text-sm tracking-widest text-brown/60 mb-3">
             To Account
           </label>
           <select
             value={selectedToAccount ?? ""}
-            onChange={(e) =>
-              setSelectedToAccount(e.target.value)
-            }
-            className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"
+            onChange={(e) => setSelectedToAccount(e.target.value)}
+            className="w-full border border-brown/20 bg-white p-4 rounded-md text-brown focus:outline-none focus:border-burgundy transition"
           >
             <option value="">Select account</option>
             {availableAccounts.map((acc) => (
@@ -85,16 +85,15 @@ export default function TransferModal({
                 key={acc.accountNumber}
                 value={acc.accountNumber}
               >
-                {acc.accountName} (#
-                {acc.accountNumber})
+                {acc.accountName} (#{acc.accountNumber})
               </option>
             ))}
           </select>
         </div>
 
         {/* Amount */}
-        <div className="mb-6">
-          <label className="block text-sm text-slate-400 mb-1">
+        <div className="mb-10">
+          <label className="block text-sm tracking-widest text-brown/60 mb-3">
             Amount
           </label>
           <input
@@ -102,25 +101,23 @@ export default function TransferModal({
             value={amount}
             onChange={(e) => onAmountChange(e.target.value)}
             placeholder="Enter amount"
-            className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-white"
+            className="w-full border border-brown/20 bg-white p-4 rounded-md text-brown focus:outline-none focus:border-burgundy transition"
           />
         </div>
 
         {/* Actions */}
-        <div className="flex gap-3">
+        <div className="flex gap-4">
           <button
             onClick={onClose}
-            className="flex-1 bg-slate-700 hover:bg-slate-600 py-2 rounded-lg transition"
+            className="flex-1 border border-brown/20 py-3 rounded-md text-brown hover:bg-brown/5 transition"
           >
             Cancel
           </button>
 
           <button
-            disabled={
-              loading || !selectedToAccount || !amount
-            }
+            disabled={loading || !selectedToAccount || !amount}
             onClick={handleConfirm}
-            className="flex-1 bg-indigo-600 hover:bg-indigo-500 py-2 rounded-lg transition disabled:opacity-40"
+            className="flex-1 bg-burgundy text-cream py-3 rounded-md tracking-widest text-sm hover:opacity-90 transition disabled:opacity-40"
           >
             {loading ? "Processing..." : "Transfer"}
           </button>
