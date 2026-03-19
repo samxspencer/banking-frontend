@@ -42,8 +42,8 @@ export const transact = async (
 };
 
 export const transfer = async (
-    fromAccount: number,
-    toAccount: number,
+    fromAccount: string,
+    toAccount: string,
     amount: number
 ): Promise<void> => {
     await fetch(`${API}/transfer`, {
@@ -58,3 +58,20 @@ export const transfer = async (
         })
     });
 }
+
+export const getTransactions = async (
+  accountNumber: number,
+  page: number = 0,
+  size: number = 20
+) => {
+  const response = await fetch(
+    `http://localhost:8080/accounts/${accountNumber}/transactions?page=${page}&size=${size}`
+  );
+
+  const data = await response.json();
+
+  return {
+    transactions: data.content,
+    totalPages: data.totalPages,
+  };
+};
