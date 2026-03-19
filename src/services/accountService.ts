@@ -28,7 +28,7 @@ export const createAccount = async (
 };
 
 export const transact = async (
-  accountNumber: number,
+  accountNumber: string,
   type: "deposit" | "withdraw",
   amount: number
 ): Promise<void> => {
@@ -60,7 +60,7 @@ export const transfer = async (
 }
 
 export const getTransactions = async (
-  accountNumber: number,
+  accountNumber: string,
   page: number = 0,
   size: number = 20
 ) => {
