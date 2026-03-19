@@ -30,55 +30,121 @@ export default function AccountCard({
       onClick={() =>
         navigate(`/account/${account.accountNumber}`)
       }
-      className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-lg cursor-pointer hover:border-indigo-500 transition"
+      className="
+        group
+        bg-cream
+        text-brown
+        rounded-2xl
+        p-6
+        shadow-lg
+        hover:shadow-2xl
+        hover:-translate-y-1
+        border border-transparent
+        hover:border-burgundy
+        transition-all duration-300
+        cursor-pointer
+      "
     >
+      {/* Burgundy Accent Bar */}
+      <div
+        className="
+          h-1
+          w-14
+          bg-burgundy
+          rounded
+          mb-6
+          group-hover:w-24
+          transition-all duration-300
+        "
+      />
+
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">
           {account.accountName}
         </h2>
-        <span className="text-slate-400 text-sm">
+
+        <span className="text-xs text-brown/60">
           {account.accountNumber}
         </span>
       </div>
 
       {/* Balance */}
-      <div className="mb-6">
-        <p className="text-slate-400 text-sm">Balance</p>
-        <p className="text-2xl font-bold text-green-400">
+      <div className="mb-8">
+        <p className="text-sm text-brown/60 mb-1">
+          Current Balance
+        </p>
+
+        <p className="text-3xl font-bold">
           {formatBalance(account.balance)}
         </p>
       </div>
 
-      {/* Actions */}
+      {/* Buttons */}
       <div
         className="grid grid-cols-2 gap-3"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Primary */}
         <button
           onClick={onDeposit}
-          className="bg-green-600 hover:bg-green-500 py-2 rounded-lg transition"
+          className="
+            h-11
+            rounded-xl
+            bg-burgundy
+            text-cream
+            font-medium
+            hover:bg-[#990026]
+            transition
+          "
         >
           Deposit
         </button>
 
+        {/* Secondary */}
         <button
           onClick={onWithdraw}
-          className="bg-red-600 hover:bg-red-500 py-2 rounded-lg transition"
+          className="
+            h-11
+            rounded-xl
+            bg-brown
+            text-cream
+            font-medium
+            hover:bg-[#120d0c]
+            transition
+          "
         >
           Withdraw
         </button>
 
+        {/* Tertiary */}
         <button
           onClick={onTransfer}
-          className="bg-indigo-600 hover:bg-indigo-500 py-2 rounded-lg transition"
+          className="
+            h-11
+            rounded-xl
+            border border-brown
+            text-brown
+            hover:bg-brown
+            hover:text-cream
+            transition
+          "
         >
           Transfer
         </button>
 
+        {/* Outline Accent */}
         <button
           onClick={onViewTransactions}
-          className="bg-slate-700 hover:bg-slate-600 py-2 rounded-lg transition"
+          className="
+            h-11
+            rounded-xl
+            border border-burgundy
+            text-brown
+            hover:bg-burgundy
+            hover:text-cream
+            transition
+          "
         >
           History
         </button>

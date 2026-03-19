@@ -3,7 +3,7 @@ interface Props {
   currency: string;
   onNameChange: (value: string) => void;
   onCurrencyChange: (value: string) => void;
-  onCreate: () => void;
+  onSubmit: () => void;
 }
 
 export default function CreateAccountForm({
@@ -11,36 +11,64 @@ export default function CreateAccountForm({
   currency,
   onNameChange,
   onCurrencyChange,
-  onCreate,
+  onSubmit,
 }: Props) {
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl mb-12">
-      <h2 className="text-2xl font-semibold mb-6 text-indigo-400">
-        Create New Account
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-12 shadow-sm border border-brown/10">
+      <h2 className="text-xl tracking-widest font-semibold mb-10 text-brown">
+        Open A New Account
       </h2>
 
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
+        {/* Name Input */}
         <input
           type="text"
-          placeholder="Account Holder Name"
           value={name}
           onChange={(e) => onNameChange(e.target.value)}
-          className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          placeholder="Account Holder Name"
+          className="
+            flex-1
+            rounded-xl
+            border border-brown/20
+            bg-transparent
+            p-4
+            outline-none
+            focus:border-burgundy
+            transition
+          "
         />
 
+        {/* Currency Select */}
         <select
           value={currency}
           onChange={(e) => onCurrencyChange(e.target.value)}
-          className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-3"
+          className="
+            rounded-xl
+            border border-brown/20
+            bg-transparent
+            p-4
+            outline-none
+            focus:border-burgundy
+            transition
+          "
         >
-          <option>USD</option>
-          <option>EUR</option>
-          <option>GBP</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
         </select>
 
+        {/* Submit Button */}
         <button
-          onClick={onCreate}
-          className="bg-indigo-600 hover:bg-indigo-500 px-6 py-3 rounded-lg font-medium transition"
+          onClick={onSubmit}
+          className="
+            bg-burgundy
+            text-cream
+            px-10
+            rounded-md
+            tracking-widest
+            text-sm
+            hover:opacity-90
+            transition
+            "
         >
           Create
         </button>

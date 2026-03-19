@@ -14,7 +14,7 @@ import {
   transact,
   transfer,
   getTransactions,
-} from "..//services/accountService";
+} from "../services/accountService";
 
 export default function Home() {
   // ===============================
@@ -28,10 +28,10 @@ export default function Home() {
   // Deposit / Withdraw Modal State
   // ===============================
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
-  const [actionType, setActionType] = useState<"deposit" | "withdraw" | null>(
-    null
-  );
+  const [selectedAccount, setSelectedAccount] =
+    useState<Account | null>(null);
+  const [actionType, setActionType] =
+    useState<"deposit" | "withdraw" | null>(null);
   const [amount, setAmount] = useState("");
   const [loadingAction, setLoadingAction] = useState(false);
 
@@ -39,21 +39,25 @@ export default function Home() {
   // Transfer Modal State
   // ===============================
   const [transferOpen, setTransferOpen] = useState(false);
-  const [transferFrom, setTransferFrom] = useState<Account | null>(null);
+  const [transferFrom, setTransferFrom] =
+    useState<Account | null>(null);
   const [transferAmount, setTransferAmount] = useState("");
-  const [transferLoading, setTransferLoading] = useState(false);
+  const [transferLoading, setTransferLoading] =
+    useState(false);
 
   // ===============================
   // Transaction History State
   // ===============================
-  const [transactionPanelOpen, setTransactionPanelOpen] = useState(false);
-  const [selectedTransactions, setSelectedTransactions] = useState<
-    Transaction[]
-  >([]);
+  const [transactionPanelOpen, setTransactionPanelOpen] =
+    useState(false);
+  const [selectedTransactions, setSelectedTransactions] =
+    useState<Transaction[]>([]);
   const [selectedAccountForHistory, setSelectedAccountForHistory] =
     useState<Account | null>(null);
-  const [transactionPage, setTransactionPage] = useState(0);
-  const [transactionTotalPages, setTransactionTotalPages] = useState(0);
+  const [transactionPage, setTransactionPage] =
+    useState(0);
+  const [transactionTotalPages, setTransactionTotalPages] =
+    useState(0);
 
   // ===============================
   // Initial Load
@@ -81,14 +85,18 @@ export default function Home() {
   // ===============================
   // Deposit / Withdraw
   // ===============================
-  const openModal = (account: Account, type: "deposit" | "withdraw") => {
+  const openModal = (
+    account: Account,
+    type: "deposit" | "withdraw"
+  ) => {
     setSelectedAccount(account);
     setActionType(type);
     setModalOpen(true);
   };
 
   const handleTransaction = async () => {
-    if (!selectedAccount || !actionType || !amount) return;
+    if (!selectedAccount || !actionType || !amount)
+      return;
 
     setLoadingAction(true);
 
@@ -112,22 +120,24 @@ export default function Home() {
     setTransferOpen(true);
   };
 
-const handleTransfer = async (toAccountNumber: string) => {
-  if (!transferFrom || !transferAmount) return;
+  const handleTransfer = async (
+    toAccountNumber: string
+  ) => {
+    if (!transferFrom || !transferAmount) return;
 
-  setTransferLoading(true);
+    setTransferLoading(true);
 
-  await transfer(
-    transferFrom.accountNumber,
-    toAccountNumber,
-    Number(transferAmount)
-  );
+    await transfer(
+      transferFrom.accountNumber,
+      toAccountNumber,
+      Number(transferAmount)
+    );
 
-  setTransferLoading(false);
-  setTransferOpen(false);
-  setTransferAmount("");
-  await loadAccounts();
-};
+    setTransferLoading(false);
+    setTransferOpen(false);
+    setTransferAmount("");
+    await loadAccounts();
+  };
 
   // ===============================
   // Transaction History
@@ -136,7 +146,10 @@ const handleTransfer = async (toAccountNumber: string) => {
     account: Account,
     page: number = 0
   ) => {
-    const data = await getTransactions(account.accountNumber, page);
+    const data = await getTransactions(
+      account.accountNumber,
+      page
+    );
 
     setSelectedTransactions(data.transactions);
     setTransactionTotalPages(data.totalPages);
@@ -146,47 +159,78 @@ const handleTransfer = async (toAccountNumber: string) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white p-8">
-      {/* ================= HEADER ================= */}
-      <header className="flex justify-between items-center mb-12">
-        <h1 className="text-4xl font-bold">
-          Banking<span className="text-indigo-500">Core</span>
-        </h1>
-        <p className="text-slate-400">Full-Stack Banking System</p>
-      </header>
+    <div className="max-w-7xl mx-auto px-8 py-16">
 
-      {/* ================= CREATE ACCOUNT ================= */}
-      <CreateAccountForm
-        name={name}
-        currency={currency}
-        onNameChange={setName}
-        onCurrencyChange={setCurrency}
-        onCreate={handleCreateAccount}
+
+    {/* Hero Image Section */}
+    <section className="relative h-[75vh] w-full overflow-hidden rounded-2xl mb-24">
+
+      {/* Background Image */}
+      <img
+        src="https://www.bochk.com/dam/more/pwealth/images/contactus/banner.jpg"
+        alt="Financial Hub"
+        className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* ================= ACCOUNTS ================= */}
-      <h2 className="text-2xl font-semibold mb-6">Accounts</h2>
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-ink/40"></div>
+
+      {/* Text */}
+      <div className="relative z-10 h-full flex flex-col justify-center px-16 text-cream">
+        <h1 className="text-6xl font-semibold leading-tight tracking-tight max-w-3xl">
+          Private Wealth.
+          <br />
+          Structured With Precision.
+        </h1>
+
+        <p className="mt-8 text-lg tracking-wide max-w-xl text-cream/80">
+          A refined full‑stack banking architecture built for disciplined capital management and institutional clarity.
+        </p>
+      </div>
+    </section>
+
+      {/* CREATE ACCOUNT */}
+      <div className="mb-16">
+        <CreateAccountForm
+          name={name}
+          currency={currency}
+          onNameChange={setName}
+          onCurrencyChange={setCurrency}
+          onSubmit={handleCreateAccount}
+        />
+      </div>
+
+      {/* ACCOUNTS */}
+      <h2 className="text-3xl font-bold mb-8">
+        Accounts
+      </h2>
 
       {accounts.length === 0 ? (
-        <p className="text-slate-400">No accounts created yet.</p>
+        <p>No accounts created yet.</p>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {accounts.map((acc) => (
             <AccountCard
               key={acc.accountNumber}
               account={acc}
-              onDeposit={(account) => openModal(account, "deposit")}
-              onWithdraw={(account) => openModal(account, "withdraw")}
-              onTransfer={(account) => openTransfer(account)}
-              onViewTransactions={(account) =>
-                viewTransactions(account)
+              onDeposit={() =>
+                openModal(acc, "deposit")
+              }
+              onWithdraw={() =>
+                openModal(acc, "withdraw")
+              }
+              onTransfer={() =>
+                openTransfer(acc)
+              }
+              onViewTransactions={() =>
+                viewTransactions(acc)
               }
             />
           ))}
         </div>
       )}
 
-      {/* ================= TRANSACTION MODAL ================= */}
+      {/* MODALS */}
       <TransactionModal
         isOpen={modalOpen}
         account={selectedAccount}
@@ -198,35 +242,37 @@ const handleTransfer = async (toAccountNumber: string) => {
         onConfirm={handleTransaction}
       />
 
-      {/* ================= TRANSFER MODAL ================= */}
       <TransferModal
-          isOpen={transferOpen}
-          accounts={accounts}
-          fromAccount={transferFrom}
-          amount={transferAmount}
-          loading={transferLoading}
-          onClose={() => setTransferOpen(false)}
-          onAmountChange={setTransferAmount}
-          onConfirm={(toAccountNumber) =>
-            handleTransfer(toAccountNumber)
-          }
-        />
+        isOpen={transferOpen}
+        accounts={accounts}
+        fromAccount={transferFrom}
+        amount={transferAmount}
+        loading={transferLoading}
+        onClose={() => setTransferOpen(false)}
+        onAmountChange={setTransferAmount}
+        onConfirm={handleTransfer}
+      />
 
-      {/* ================= TRANSACTION PANEL ================= */}
-      {transactionPanelOpen && selectedAccountForHistory && (
-        <TransactionPanel
-          transactions={selectedTransactions}
-          accountName={
-            selectedAccountForHistory.accountName
-          }
-          currentPage={transactionPage}
-          totalPages={transactionTotalPages}
-          onPageChange={(page) =>
-            viewTransactions(selectedAccountForHistory, page)
-          }
-          onClose={() => setTransactionPanelOpen(false)}
-        />
-      )}
+      {transactionPanelOpen &&
+        selectedAccountForHistory && (
+          <TransactionPanel
+            transactions={selectedTransactions}
+            accountName={
+              selectedAccountForHistory.accountName
+            }
+            currentPage={transactionPage}
+            totalPages={transactionTotalPages}
+            onPageChange={(page) =>
+              viewTransactions(
+                selectedAccountForHistory,
+                page
+              )
+            }
+            onClose={() =>
+              setTransactionPanelOpen(false)
+            }
+          />
+        )}
     </div>
   );
 }

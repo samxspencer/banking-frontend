@@ -5,10 +5,12 @@ import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
 import AccountDetail from "./pages/AccountDetail";
 import EditAccount from "./pages/EditAccount";
+import Footer from "./components/Footer";
 
 export default function App() {
   return (
-    <BrowserRouter>
+        <div className="min-h-screen bg-cream text-brown">
+      <BrowserRouter>
       <Navbar/>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -17,6 +19,9 @@ export default function App() {
         <Route path="/account/:id" element={<AccountDetail />} />
         <Route path="/account/:id/edit" element={<EditAccount />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
+    </div>
+
   );
 }
