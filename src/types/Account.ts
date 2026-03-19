@@ -1,6 +1,6 @@
 export interface Account {
-  accountNumber: number;
-  name: string;
+  accountName: number;
+  accountNumber: string;
   balance: number;
   currency: string;
 }

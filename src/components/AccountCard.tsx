@@ -4,17 +4,19 @@ interface Props {
   account: Account;
   onDeposit: (account: Account) => void;
   onWithdraw: (account: Account) => void;
+  onTransfer: (account: Account) => void;
 }
 
 export default function AccountCard({
   account,
   onDeposit,
   onWithdraw,
+  onTransfer,
 }: Props) {
   return (
     <div className="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-800 rounded-2xl p-6 shadow-xl hover:scale-[1.02] transition-transform duration-300">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-semibold">{account.name}</h3>
+        <h3 className="text-lg font-semibold text-slate-400">{account.accountName}</h3>
         <span className="text-xs bg-indigo-600/20 text-indigo-400 px-3 py-1 rounded-full">
           {account.currency}
         </span>
@@ -41,6 +43,13 @@ export default function AccountCard({
           className="flex-1 bg-rose-600 hover:bg-rose-500 py-2 rounded-lg text-sm font-medium transition"
         >
           Withdraw
+        </button>
+
+        <button
+            onClick={() => onTransfer(account)}
+            className="flex-1 bg-indigo-600 hover:bg-indigo-500 py-2 rounded-lg text-sm font-medium transition"
+        >
+            Transfer
         </button>
       </div>
     </div>

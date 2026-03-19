@@ -4,7 +4,14 @@ const API = "http://localhost:8080/accounts";
 
 export const fetchAccounts = async (): Promise<Account[]> => {
   const res = await fetch(API);
-  return res.json();
+  const data = await res.json();
+  // return res.json();
+  return data.map((acc: any) => ({
+    accountNumber: acc.accountNumber,
+    accountName: acc.accountHolderName,
+    balance: acc.balance,
+    currency: acc.currency,
+  }))
 };
 
 export const createAccount = async (
@@ -33,3 +40,21 @@ export const transact = async (
     body: JSON.stringify({ amount }),
   });
 };
+
+export const transfer = async (
+    fromAccount: number,
+    toAccount: number,
+    amount: number
+): Promise<void> => {
+    await fetch(`${API}/transfer`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            fromAccount,
+            toAccount,
+            amount,
+        })
+    });
+}

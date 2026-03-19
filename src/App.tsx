@@ -3,6 +3,8 @@ import type { Account } from "./types/Account";
 import AccountCard from "./components/AccountCard";
 import CreateAccountForm from "./components/CreateAccountForm";
 import TransactionModal from "./components/TransactionModal";
+import TransferModal from "./components/TransferModal";
+import { transfer } from "./services/accountService";
 
 import {
   fetchAccounts,
@@ -20,6 +22,11 @@ export default function App() {
   const [actionType, setActionType] = useState<"deposit" | "withdraw" | null>(null);
   const [amount, setAmount] = useState("");
   const [loadingAction, setLoadingAction] = useState(false);
+  const [transferOpen, setTransferOpen] = useState(false);
+  const [transferFrom, setTransferFrom] = useState<Account | null>(null);
+  const [transferAmount, setTransferAmount] = useState("");
+  const [transferLoading, setTransferLoading] = useState(false);
+  const [transferTo, setTransferTo] = useState<number | null>(null);
 
   useEffect(() => {
     loadAccounts();
@@ -61,6 +68,29 @@ export default function App() {
     await loadAccounts();
   };
 
+  const openTransfer = (account: Account) => {
+    setTransferFrom(account);
+    setTransferOpen(true);
+  };
+
+  const handleTransfer = async () => {
+    if (!transferFrom || !transferTo || !transferAmount) return;
+
+    setTransferLoading(true);
+
+    await transfer(
+      transferFrom.accountNumber,
+      transferTo,
+      Number(transferAmount)
+    );
+
+    setTransferLoading(false);
+    setTransferOpen(false);
+    setTransferAmount("");
+    setTransferTo(null);
+    await loadAccounts();
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-white p-8">
       {/* Header */}
@@ -93,6 +123,7 @@ export default function App() {
               account={acc}
               onDeposit={(account) => openModal(account, "deposit")}
               onWithdraw={(account) => openModal(account, "withdraw")}
+              onTransfer={(account) => openTransfer(account)}
             />
           ))}
         </div>
@@ -108,6 +139,21 @@ export default function App() {
         onAmountChange={setAmount}
         onClose={() => setModalOpen(false)}
         onConfirm={handleTransaction}
+      />
+
+      {/* Transfer Modal */}
+      <TransferModal
+        isOpen={transferOpen}
+        accounts={accounts}
+        fromAccount={transferFrom}
+        amount={transferAmount}
+        loading={transferLoading}
+        onClose={() => setTransferOpen(false)}
+        onAmountChange={setTransferAmount}
+        onConfirm={(toAccountNumber) => {
+          setTransferTo(toAccountNumber);
+          handleTransfer();
+        }}
       />
     </div>
   );
